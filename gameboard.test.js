@@ -55,4 +55,43 @@ describe("Gameboard", () => {
     
     expect(board.allShipsSunk()).toBe(true);
   });
+
+  test('prevents placing ship out of bounds horizontally', () => {
+    const board = new Gameboard();
+    const ship = new Ship(5);
+    const result = board.placeShip(ship, [0, 8], 'horizontal');
+    expect(result).toBe(false);
+  });
+
+  test('prevents placing ship out of bounds vertically', () => {
+    const board = new Gameboard();
+    const ship = new Ship(4);
+    const result = board.placeShip(ship, [8, 0], 'vertical');
+    expect(result).toBe(false);
+  });
+
+  test('prevents overlapping ships', () => {
+    const board = new Gameboard();
+    const ship1 = new Ship(3);
+    const ship2 = new Ship(3);
+    board.placeShip(ship1, [0, 0], 'horizontal');
+    const result = board.placeShip(ship2, [0, 1], 'horizontal');
+    expect(result).toBe(false);
+  });
+
+  test('allows valid ship placement', () => {
+    const board = new Gameboard();
+    const ship = new Ship(3);
+    const result = board.placeShip(ship, [2, 2], 'horizontal');
+    expect(result).toBe(true);
+  });
+
+  test('prevents duplicate attacks', () => {
+    const board = new Gameboard();
+    board.receiveAttack([5, 5]);
+    const result = board.receiveAttack([5, 5]);
+    
+    expect(result).toBe(false);
+    expect(board.missedAttacks.length).toBe(1);
+  });
 });
