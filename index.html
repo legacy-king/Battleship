@@ -3,42 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Battleship Game</title>
+  <title>Battleship Game - Accessible</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Battleship</h1>
+   <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <div class="container" id="main-content">
+    <header>
+      <h1>Battleship</h1>
+    </header>
     
-    <div class="game-info">
-      <p id="game-status">Place your ships to start!</p>
-      <button id="random-ships-btn">Random Ship Placement</button>
-      <button id="start-game-btn" disabled>Start Game</button>
-      <button id="reset-btn">Reset Game</button>
-    </div>
+    <main>
+      <section class="game-info" aria-live="polite">
+        <p id="game-status" role="status">Place your ships to start!</p>
+        <div class="controls">
+          <button id="random-ships-btn" aria-label="Randomly place ships on your board">
+            Random Ship Placement
+          </button>
+          <button id="start-game-btn" disabled aria-label="Start the game">
+            Start Game
+          </button>
+          <button id="reset-btn" aria-label="Reset and start a new game">
+            Reset Game
+          </button>
+        </div>
+      </section>
 
-    <div class="boards-container">
-      <div class="board-section">
-        <h2>Your Board</h2>
-        <div id="player-board" class="board"></div>
+      <div class="boards-container">
+        <section class="board-section">
+          <h2>Your Board</h2>
+          <div id="player-board" 
+               class="board" 
+               role="grid"
+               aria-label="Your game board showing your ships">
+          </div>
+        </section>
+
+        <section class="board-section">
+          <h2>Enemy Board</h2>
+          <div id="computer-board" 
+               class="board" 
+               role="grid"
+               aria-label="Enemy board where you can attack">
+          </div>
+        </section>
       </div>
-
-      <div class="board-section">
-        <h2>Enemy Board</h2>
-        <div id="computer-board" class="board"></div>
-      </div>
-    </div>
-
-    <div class="ships-info">
-      <h3>Ships to Place:</h3>
-      <ul id="ships-list">
-        <li>Carrier (5 cells)</li>
-        <li>Battleship (4 cells)</li>
-        <li>Cruiser (3 cells)</li>
-        <li>Submarine (3 cells)</li>
-        <li>Destroyer (2 cells)</li>
-      </ul>
-    </div>
+    </main>
   </div>
 
   <script type="module" src="game.js"></script>

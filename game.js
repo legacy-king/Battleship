@@ -39,14 +39,20 @@ function renderBoard(boardElement, gameboard, showShips) {
   
   for (let x = 0; x < 10; x++) {
     for (let y = 0; y < 10; y++) {
-      const cell = document.createElement('div');
+      // CREATE BUTTON INSTEAD OF DIV
+      const cell = document.createElement('button');
       cell.classList.add('cell');
       cell.dataset.x = x;
       cell.dataset.y = y;
       
+      // ADD ARIA LABEL FOR SCREEN READERS
+      const coordinate = `${String.fromCharCode(65 + x)}${y + 1}`;
+      cell.setAttribute('aria-label', `Position ${coordinate}`);
+      
       // Check if there's a ship
       if (showShips && gameboard.getShipAt([x, y])) {
         cell.classList.add('ship');
+        cell.setAttribute('aria-label', `Your ship at ${coordinate}`);
       }
       
       // Check if attacked
@@ -56,15 +62,19 @@ function renderBoard(boardElement, gameboard, showShips) {
       
       if (isAttacked) {
         cell.classList.add('attacked');
+        cell.disabled = true; // Disable attacked cells
+        
         if (gameboard.getShipAt([x, y])) {
           cell.classList.add('hit');
+          cell.setAttribute('aria-label', `Hit at ${coordinate}`);
         } else {
           cell.classList.add('miss');
+          cell.setAttribute('aria-label', `Miss at ${coordinate}`);
         }
       }
       
       // Add click handler for computer board
-      if (!showShips && gameStarted) {
+      if (!showShips && gameStarted && !isAttacked) {
         cell.addEventListener('click', () => handleAttack(x, y));
       }
       
